@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getAuthenticatedUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { callLLM, callEmbedding } from '@/lib/llm/adapter'
-import { PDFParse } from 'pdf-parse'
 
 const PARSE_PROMPT = `You are a resume parser. Extract structured data from the resume text below. Return ONLY valid JSON with no markdown fences.
 
@@ -23,6 +22,13 @@ Rules:
 Resume text:
 `
 
+async function extractPdfText(buffer: Buffer): Promise<string> {
+  const { PDFParse } = await import('pdf-parse')
+  const parser = new PDFParse({ data: new Uint8Array(buffer) })
+  const result = await parser.getText()
+  return result.text
+}
+
 export async function POST(request: NextRequest) {
   const { user, error: authError } = await getAuthenticatedUser()
   if (authError) return authError
@@ -41,9 +47,13 @@ export async function POST(request: NextRequest) {
 
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
-    const parser = new PDFParse({ data: new Uint8Array(buffer) })
-    const result = await parser.getText()
-    const text = result.text
+
+    let text: string
+    try {
+      text = await extractPdfText(buffer)
+    } catch {
+      return NextResponse.json({ error: 'Could not parse PDF. The file may be corrupted or image-based.' }, { status: 400 })
+    }
 
     if (!text || text.trim().length === 0) {
       return NextResponse.json({ error: 'Could not extract text from PDF. The file may be image-based.' }, { status: 400 })
