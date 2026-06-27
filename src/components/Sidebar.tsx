@@ -7,9 +7,13 @@ import { useState } from "react"
 const links = [
   { href: "/app", label: "Dashboard", icon: "◉" },
   { href: "/app/resume", label: "My Resume", icon: "📄" },
+  { href: "/app/linkedin", label: "LinkedIn Profile", icon: "🔗" },
   { href: "/app/jobs", label: "Target Jobs", icon: "🎯" },
   { href: "/app/gap", label: "Gap Analysis", icon: "📊" },
   { href: "/app/roadmap", label: "My Roadmap", icon: "🗺" },
+  { href: "/app/coverletter", label: "Cover Letter", icon: "✉" },
+  { href: "/app/interview", label: "Interview Prep", icon: "🎙" },
+  { href: "/app/quiz", label: "Skill Quiz", icon: "❓" },
   { href: "/app/chat", label: "Mentor Chat", icon: "💬" },
   { href: "/app/settings", label: "Settings", icon: "⚙" },
 ]
