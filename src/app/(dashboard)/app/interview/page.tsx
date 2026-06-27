@@ -100,7 +100,7 @@ export default function InterviewPage() {
           <select
             value={selectedGap}
             onChange={(e) => setSelectedGap(e.target.value)}
-            className="w-full border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink"
+            className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink"
           >
             {gaps.map((g) => (
               <option key={g.id} value={g.id}>

@@ -107,7 +107,7 @@ export default function SettingsPage() {
                         value={config.apiKey}
                         onChange={(e) => updateProvider(provider.name, "apiKey", e.target.value)}
                         placeholder={config.apiKey ? "••••••••" : "Enter API key"}
-                        className="w-full border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-ink"
+                        className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-ink"
                       />
                     </div>
                     <div>
@@ -117,7 +117,7 @@ export default function SettingsPage() {
                         value={config.model}
                         onChange={(e) => updateProvider(provider.name, "model", e.target.value)}
                         placeholder="Model name"
-                        className="w-full border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-ink"
+                        className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-ink"
                       />
                     </div>
                   </div>

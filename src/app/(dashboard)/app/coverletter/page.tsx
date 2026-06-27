@@ -107,7 +107,7 @@ export default function CoverLetterPage() {
             <select
               value={selectedResume}
               onChange={(e) => setSelectedResume(e.target.value)}
-              className="w-full border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink"
+              className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink"
             >
               {resumes.map((r) => (
                 <option key={r.id} value={r.id}>
@@ -121,7 +121,7 @@ export default function CoverLetterPage() {
             <select
               value={selectedJob}
               onChange={(e) => setSelectedJob(e.target.value)}
-              className="w-full border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink"
+              className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink"
             >
               {jobs.map((j) => (
                 <option key={j.id} value={j.id}>

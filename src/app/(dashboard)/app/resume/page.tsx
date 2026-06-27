@@ -127,7 +127,7 @@ export default function ResumePage() {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="Paste your resume text here..."
-                className="w-full h-64 border border-hairline-strong rounded-md p-4 text-sm text-ink resize-none focus:outline-none focus:border-ink"
+                className="w-full h-64 bg-canvas border border-hairline-strong rounded-md p-4 text-sm text-ink resize-none focus:outline-none focus:border-ink"
               />
               <button
                 onClick={handleParse}

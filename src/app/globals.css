@@ -66,3 +66,28 @@ html.dark .bg-primary { background-color: #ffffff !important; }
 html.dark .text-on-primary { color: #000000 !important; }
 html.dark .bg-primary\/5 { background-color: rgba(255, 255, 255, 0.05) !important; }
 html.dark .border-primary\/20 { border-color: rgba(255, 255, 255, 0.2) !important; }
+
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: var(--color-canvas) !important;
+  color: var(--color-ink) !important;
+  border-color: #3a3a3a !important;
+}
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #555 !important;
+}
+html.dark option {
+  background-color: var(--color-canvas) !important;
+  color: var(--color-ink) !important;
+}
+html.dark .bg-green-50 { background-color: #052e16 !important; }
+html.dark .text-green-700 { color: #4ade80 !important; }
+html.dark .border-green-200 { border-color: #166534 !important; }
+html.dark .bg-yellow-50 { background-color: #422006 !important; }
+html.dark .text-yellow-700 { color: #facc15 !important; }
+html.dark .border-yellow-200 { border-color: #854d0e !important; }
+html.dark .bg-red-50 { background-color: #450a0a !important; }
+html.dark .text-red-700 { color: #f87171 !important; }
+html.dark .border-red-200 { border-color: #991b1b !important; }

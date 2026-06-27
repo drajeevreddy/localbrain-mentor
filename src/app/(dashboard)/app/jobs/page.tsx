@@ -102,7 +102,7 @@ export default function JobsPage() {
               type="text"
               value={jobTitle}
               onChange={(e) => setJobTitle(e.target.value)}
-              className="w-full border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-ink"
+              className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-ink"
               placeholder="e.g., Senior React Developer"
             />
           </div>
@@ -112,7 +112,7 @@ export default function JobsPage() {
               type="text"
               value={company}
               onChange={(e) => setCompany(e.target.value)}
-              className="w-full border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-ink"
+              className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-ink"
               placeholder="e.g., Stripe"
             />
           </div>
@@ -121,7 +121,7 @@ export default function JobsPage() {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Paste the full job description here..."
-          className="w-full h-48 border border-hairline-strong rounded-md p-4 text-sm text-ink resize-none focus:outline-none focus:border-ink mb-4"
+          className="w-full h-48 bg-canvas border border-hairline-strong rounded-md p-4 text-sm text-ink resize-none focus:outline-none focus:border-ink mb-4"
         />
         <button
           onClick={handleAnalyze}
