@@ -6,7 +6,7 @@ import EmptyState from "@/components/EmptyState"
 
 interface Resume {
   id: string
-  parsed_text?: string
+  raw_text?: string
   created_at: string
 }
 
@@ -34,7 +34,7 @@ export default function CoverLetterPage() {
       const [resumesRes, jobsRes] = await Promise.all([
         supabase
           .from("resumes")
-          .select("id, parsed_text, created_at")
+          .select("id, raw_text, created_at")
           .eq("user_id", user.id)
           .order("created_at", { ascending: false }),
         supabase

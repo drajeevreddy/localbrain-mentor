@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
 
     const { provider, apiKey, model } = settingsResult
 
-    const resumeText = resume.parsed_text || JSON.stringify(resume.parsed_skills, null, 2)
+    const resumeText = resume.raw_text || JSON.stringify(resume.parsed_skills, null, 2)
     const requiredSkills = JSON.stringify(job.required_skills, null, 2)
 
     const prompt = COVER_LETTER_PROMPT
