@@ -55,6 +55,30 @@ export default function ResumePage() {
     setLoading(false)
   }
 
+  const handlePdfUpload = async (file: File) => {
+    setLoading(true)
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      const res = await fetch("/api/resume/upload", {
+        method: "POST",
+        body: formData,
+      })
+      const data = await res.json()
+      if (data.error) {
+        console.error(data.error)
+      } else if (data.parsed) {
+        setParsed(data.parsed)
+        if (data.resume) {
+          setResumes((prev) => [{ id: data.resume.id, parsed_skills: data.resume.parsed_skills }, ...prev])
+        }
+      }
+    } catch (err) {
+      console.error(err)
+    }
+    setLoading(false)
+  }
+
   const getLevelVariant = (level: string) => {
     if (level === "advanced" || level === "expert") return "strong"
     if (level === "intermediate") return "partial"
@@ -138,10 +162,32 @@ export default function ResumePage() {
               </button>
             </div>
           ) : (
-            <div className="border-2 border-dashed border-hairline-strong rounded-lg p-12 text-center">
+            <div
+              className="border-2 border-dashed border-hairline-strong rounded-lg p-12 text-center cursor-pointer hover:border-primary/40 transition-colors"
+              onClick={() => document.getElementById('pdf-upload')?.click()}
+              onDragOver={(e) => { e.preventDefault(); e.currentTarget.classList.add('border-primary', 'bg-primary/5') }}
+              onDragLeave={(e) => { e.currentTarget.classList.remove('border-primary', 'bg-primary/5') }}
+              onDrop={(e) => {
+                e.preventDefault()
+                e.currentTarget.classList.remove('border-primary', 'bg-primary/5')
+                const file = e.dataTransfer.files[0]
+                if (file && file.type === 'application/pdf') handlePdfUpload(file)
+              }}
+            >
+              <input
+                id="pdf-upload"
+                type="file"
+                accept=".pdf"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) handlePdfUpload(file)
+                }}
+              />
               <div className="text-4xl mb-3">📄</div>
               <p className="text-sm text-body mb-2">Drag and drop your PDF here</p>
               <p className="text-xs text-muted">or click to browse</p>
+              {loading && <p className="text-sm text-text-link mt-3">Uploading and parsing...</p>}
             </div>
           )}
         </div>
