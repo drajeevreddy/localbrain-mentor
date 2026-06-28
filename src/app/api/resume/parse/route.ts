@@ -51,8 +51,9 @@ export async function POST(request: NextRequest) {
     let parsedData
     try {
       parsedData = extractJson(parsed)
-    } catch {
-      return NextResponse.json({ error: 'Failed to parse LLM response', raw: parsed }, { status: 500 })
+    } catch (e) {
+      console.error('JSON parse failed. Raw LLM response:', parsed?.substring(0, 500))
+      return NextResponse.json({ error: 'Failed to parse LLM response. Check LLM provider settings.', raw: parsed?.substring(0, 500) }, { status: 500 })
     }
 
     let embedding: number[] = []

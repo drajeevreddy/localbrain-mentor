@@ -19,6 +19,7 @@ export default function ResumePage() {
   const [loading, setLoading] = useState(false)
   const [parsed, setParsed] = useState<ParsedData | null>(null)
   const [resumes, setResumes] = useState<Array<{ id: string; parsed_skills: ParsedData["skills"] }>>([])
+  const [error, setError] = useState("")
   const supabase = useSupabase()
 
   useEffect(() => {
@@ -38,6 +39,7 @@ export default function ResumePage() {
   const handleParse = async () => {
     if (!text.trim()) return
     setLoading(true)
+    setError("")
     try {
       const res = await fetch("/api/resume/parse", {
         method: "POST",
@@ -45,9 +47,13 @@ export default function ResumePage() {
         body: JSON.stringify({ text }),
       })
       const data = await res.json()
-      if (data.parsed) setParsed(data.parsed)
-      if (data.resume) {
-        setResumes((prev) => [{ id: data.resume.id, parsed_skills: data.resume.parsed_skills }, ...prev])
+      if (data.error) {
+        setError(data.error + (data.raw ? `: ${data.raw}` : ""))
+      } else {
+        if (data.parsed) setParsed(data.parsed)
+        if (data.resume) {
+          setResumes((prev) => [{ id: data.resume.id, parsed_skills: data.resume.parsed_skills }, ...prev])
+        }
       }
     } catch (err) {
       console.error(err)
@@ -180,6 +186,11 @@ export default function ResumePage() {
               >
                 {loading ? "Parsing..." : "Parse Resume"}
               </button>
+              {error && (
+                <p className="mt-3 text-sm text-semantic-error bg-red-50 border border-red-200 rounded-md p-3 break-words">
+                  {error}
+                </p>
+              )}
             </div>
           ) : (
             <div
