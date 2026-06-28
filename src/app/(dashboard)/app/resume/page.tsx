@@ -59,8 +59,9 @@ export default function ResumePage() {
     setLoading(true)
     try {
       const arrayBuffer = await file.arrayBuffer()
-      const { getDocument } = await import('pdfjs-dist')
-      const pdf = await getDocument({ data: new Uint8Array(arrayBuffer) }).promise
+      const pdfjsLib = await import('pdfjs-dist')
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`
+      const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) }).promise
       let fullText = ''
       for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i)
