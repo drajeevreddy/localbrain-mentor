@@ -4,9 +4,27 @@
 
 🌐 **Live App:** [mentor.localbrain.in](https://mentor.localbrain.in)
 
+<p align="center">
+  <a href="https://mentor.localbrain.in">
+    <img src="https://raw.githubusercontent.com/drajeevreddy/localbrain-mentor/master/public/og-image.svg" alt="LocalBrain Mentor - Close the gap between where you are and where you want to be" width="100%">
+  </a>
+</p>
+
+<p align="center">
+  <em>Paste your resume. Paste a job description. Get a personalized learning roadmap with free resources — built by AI, tailored to you.</em>
+</p>
+
 ---
 
-Paste your resume, paste a job description, and get a personalized learning roadmap with free resources — built by AI, tailored to you.
+## How it works
+
+1. **Import Profile** — Paste text, upload PDF, or enter a URL (GitHub, website)
+2. **Analyze Job** — Paste a job description to extract required skills
+3. **Gap Analysis** — Compare your skills vs. requirements with semantic matching
+4. **Generate Roadmap** — Get a week-by-week plan with free resources
+5. **Track Progress** — Complete tasks and watch your match score improve
+6. **Chat with Mentor** — Ask questions with full context of your journey
+7. **Prepare** — Practice interview questions, generate cover letters, take quizzes
 
 ## Features
 
