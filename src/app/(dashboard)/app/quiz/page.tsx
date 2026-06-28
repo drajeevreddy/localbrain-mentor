@@ -105,7 +105,7 @@ export default function QuizPage() {
                 <select
                   value={selectedSkill}
                   onChange={(e) => setSelectedSkill(e.target.value)}
-                  className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-3 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary/20"
                 >
                   <option value="">Choose a skill...</option>
                   {skills.map((s) => (
@@ -119,7 +119,7 @@ export default function QuizPage() {
               <select
                 value={selectedLevel}
                 onChange={(e) => setSelectedLevel(e.target.value)}
-                className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-3 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary/20"
               >
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>

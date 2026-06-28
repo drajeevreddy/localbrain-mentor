@@ -36,6 +36,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Resume text is required' }, { status: 400 })
     }
 
+    if (text.length > 50000) return NextResponse.json({ error: 'Resume text too long (max 50,000 characters)' }, { status: 400 })
+
     const settingsResult = await getLLMSettings(user.id)
     if (!settingsResult) {
       return NextResponse.json({ error: 'No LLM provider configured. Go to Settings and add an API key first.' }, { status: 400 })
@@ -63,7 +65,7 @@ export async function POST(request: NextRequest) {
       parsedData = extractJson(parsed)
     } catch (e) {
       console.error('JSON parse failed. Raw LLM response (first 500 chars):', parsed.substring(0, 500))
-      return NextResponse.json({ error: `LLM returned non-JSON. Provider: ${provider}, Model: ${model}. Response starts with: ${parsed.substring(0, 200)}` }, { status: 500 })
+      return NextResponse.json({ error: 'LLM returned non-JSON response. Try a different provider in Settings.' }, { status: 500 })
     }
 
     let embedding: number[] = []

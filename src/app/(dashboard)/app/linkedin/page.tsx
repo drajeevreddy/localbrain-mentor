@@ -272,7 +272,7 @@ export default function LinkedInPage() {
           )}
 
           {error && (
-            <p className="mt-4 text-sm text-semantic-error bg-red-50 border border-red-200 rounded-md p-3">
+            <p className="mt-4 text-sm text-semantic-error bg-red-50 border border-red-200 rounded-md p-3 break-words">
               {error}
             </p>
           )}

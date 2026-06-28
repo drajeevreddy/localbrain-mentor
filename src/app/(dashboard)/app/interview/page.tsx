@@ -20,9 +20,9 @@ interface Question {
 }
 
 const DIFFICULTY_COLORS = {
-  easy: "bg-green-100 text-green-800",
-  medium: "bg-yellow-100 text-yellow-800",
-  hard: "bg-red-100 text-red-800",
+  easy: "bg-green-50 text-green-700",
+  medium: "bg-yellow-50 text-yellow-700",
+  hard: "bg-red-50 text-red-700",
 }
 
 export default function InterviewPage() {

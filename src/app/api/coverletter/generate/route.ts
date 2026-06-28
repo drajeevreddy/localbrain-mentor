@@ -81,10 +81,16 @@ export async function POST(request: NextRequest) {
       .replace('{job_description}', job.job_description_raw || '')
       .replace('{required_skills}', requiredSkills)
 
-    const coverLetter = await callLLM(
-      [{ role: 'user', content: prompt }],
-      { provider, apiKey, model }
-    )
+    let coverLetter: string
+    try {
+      coverLetter = await callLLM(
+        [{ role: 'user', content: prompt }],
+        { provider, apiKey, model }
+      )
+    } catch (llmErr) {
+      console.error('LLM call failed:', llmErr)
+      return NextResponse.json({ error: 'LLM call failed. Please try again or use a different provider in Settings.' }, { status: 500 })
+    }
 
     return NextResponse.json({ cover_letter: coverLetter })
   } catch (err) {

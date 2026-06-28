@@ -16,6 +16,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 })
     }
 
+    if (message.length > 5000) return NextResponse.json({ error: 'Message too long (max 5,000 characters)' }, { status: 400 })
+
     const supabase = await createClient()
 
     let contextPrompt = 'You are a personal career mentor. '

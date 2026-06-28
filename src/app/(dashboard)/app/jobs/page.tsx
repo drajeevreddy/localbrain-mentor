@@ -102,7 +102,7 @@ export default function JobsPage() {
               type="text"
               value={jobTitle}
               onChange={(e) => setJobTitle(e.target.value)}
-              className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-ink"
+              className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-3 text-sm text-ink focus:outline-none focus:border-ink"
               placeholder="e.g., Senior React Developer"
             />
           </div>
@@ -112,7 +112,7 @@ export default function JobsPage() {
               type="text"
               value={company}
               onChange={(e) => setCompany(e.target.value)}
-              className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-ink"
+              className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-3 text-sm text-ink focus:outline-none focus:border-ink"
               placeholder="e.g., Stripe"
             />
           </div>

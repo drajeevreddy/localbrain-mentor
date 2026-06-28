@@ -122,7 +122,7 @@ export default function ChatPage() {
                 <button
                   key={prompt}
                   onClick={() => setInput(prompt)}
-                  className="text-xs border border-hairline-strong rounded-full px-3 py-1.5 text-body hover:bg-canvas-soft transition-colors"
+                  className="text-xs border border-hairline-strong rounded-full px-3 py-2 text-body hover:bg-canvas-soft transition-colors"
                 >
                   {prompt}
                 </button>
@@ -137,7 +137,7 @@ export default function ChatPage() {
             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[70%] px-4 py-3 rounded-xl text-sm ${
+              className={`max-w-[70%] px-4 py-3 rounded-xl text-sm overflow-hidden break-words ${
                 msg.role === "user"
                   ? "bg-primary text-on-primary rounded-br-none"
                   : "bg-surface-card border border-hairline text-ink rounded-bl-none"

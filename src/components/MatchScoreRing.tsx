@@ -26,7 +26,8 @@ export default function MatchScoreRing({ score, size = 120 }: MatchScoreRingProp
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#f0f0f3"
+          className=""
+          style={{ stroke: 'var(--ring-bg, #f0f0f3)' }}
           strokeWidth="8"
         />
         <circle

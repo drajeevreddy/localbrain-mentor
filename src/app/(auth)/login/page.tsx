@@ -66,13 +66,13 @@ export default function LoginPage() {
           <div className="flex gap-2 mb-6">
             <button
               onClick={() => handleOAuth("google")}
-              className="flex-1 border border-hairline-strong rounded-md py-2 px-4 text-sm font-medium text-ink hover:bg-canvas-soft transition-colors"
+              className="flex-1 border border-hairline-strong rounded-md py-3 px-4 text-sm font-medium text-ink hover:bg-canvas-soft transition-colors"
             >
               Google
             </button>
             <button
               onClick={() => handleOAuth("github")}
-              className="flex-1 border border-hairline-strong rounded-md py-2 px-4 text-sm font-medium text-ink hover:bg-canvas-soft transition-colors"
+              className="flex-1 border border-hairline-strong rounded-md py-3 px-4 text-sm font-medium text-ink hover:bg-canvas-soft transition-colors"
             >
               GitHub
             </button>
@@ -95,7 +95,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-ink"
+                className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-3 text-sm text-ink focus:outline-none focus:border-ink"
                 placeholder="you@example.com"
               />
             </div>
@@ -106,7 +106,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-2 text-sm text-ink focus:outline-none focus:border-ink"
+                className="w-full bg-canvas border border-hairline-strong rounded-md px-3 py-3 text-sm text-ink focus:outline-none focus:border-ink"
                 placeholder="••••••••"
               />
             </div>
@@ -118,7 +118,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary text-on-primary rounded-md py-2 px-4 text-sm font-medium hover:bg-primary-active disabled:opacity-50 transition-colors"
+              className="w-full bg-primary text-on-primary rounded-md py-3 px-4 text-sm font-medium hover:bg-primary-active disabled:opacity-50 transition-colors"
             >
               {loading ? "Loading..." : mode === "signin" ? "Sign In" : "Sign Up"}
             </button>

@@ -63,6 +63,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'gap_id is required' }, { status: 400 })
     }
 
+    if (weeks_available > 52) return NextResponse.json({ error: 'Maximum 52 weeks' }, { status: 400 })
+
     const supabase = await createClient()
 
     const { data: gap, error: gapError } = await supabase

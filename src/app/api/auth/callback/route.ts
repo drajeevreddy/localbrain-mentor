@@ -10,7 +10,8 @@ export async function GET(request: NextRequest) {
     const supabase = await createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      const redirectUrl = new URL(next, origin)
+      const safeNext = next.startsWith('/') && !next.startsWith('//') && !next.includes('://') ? next : '/app'
+      const redirectUrl = new URL(safeNext, origin)
       const response = NextResponse.redirect(redirectUrl.toString())
       return response
     }

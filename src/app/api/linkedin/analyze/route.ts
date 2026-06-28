@@ -47,10 +47,16 @@ export async function POST(request: NextRequest) {
 
     const { provider, apiKey, model } = settingsResult
 
-    const parsed = await callLLM(
-      [{ role: 'user', content: PARSE_PROMPT + profile_text }],
-      { provider, apiKey, model }
-    )
+    let parsed: string
+    try {
+      parsed = await callLLM(
+        [{ role: 'user', content: PARSE_PROMPT + profile_text }],
+        { provider, apiKey, model }
+      )
+    } catch (llmErr) {
+      console.error('LLM call failed:', llmErr)
+      return NextResponse.json({ error: 'LLM call failed. Please try again or use a different provider in Settings.' }, { status: 500 })
+    }
 
     let parsedData
     try {

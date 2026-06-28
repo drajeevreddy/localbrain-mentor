@@ -24,6 +24,14 @@ Rules:
 Profile text:
 `
 
+function isPrivateIP(hostname: string): boolean {
+  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1') return true
+  if (hostname.startsWith('192.168.') || hostname.startsWith('10.') || hostname.startsWith('172.')) return true
+  if (hostname === '169.254.169.254') return true
+  if (hostname.endsWith('.local') || hostname.endsWith('.internal')) return true
+  return false
+}
+
 function stripHtml(html: string): string {
   let text = html
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
@@ -63,6 +71,10 @@ export async function POST(request: NextRequest) {
       }
     } catch {
       return NextResponse.json({ error: 'Invalid URL format' }, { status: 400 })
+    }
+
+    if (isPrivateIP(parsedUrl.hostname)) {
+      return NextResponse.json({ error: 'Private/internal URLs are not allowed' }, { status: 400 })
     }
 
     let html: string
