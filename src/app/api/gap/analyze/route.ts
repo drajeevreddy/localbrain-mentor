@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getAuthenticatedUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { callLLM } from '@/lib/llm/adapter'
+import { getLLMSettings } from '@/lib/llm/settings'
 
 const GAP_PROMPT = `You are a career gap analyzer. Given a candidate's resume skills and a job's required skills, produce an honest gap analysis. Return ONLY valid JSON.
 
@@ -129,28 +130,4 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
-}
-
-async function getLLMSettings(userId: string) {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('user_settings')
-    .select('settings')
-    .eq('user_id', userId)
-    .single()
-
-  if (!data?.settings?.providers) return null
-
-  const chain = data.settings.fallbackChain || ['nvidia', 'groq', 'openrouter']
-  for (const providerName of chain) {
-    const providerConfig = data.settings.providers[providerName]
-    if (providerConfig?.enabled && providerConfig?.apiKey) {
-      return {
-        provider: providerName,
-        apiKey: providerConfig.apiKey,
-        model: providerConfig.model,
-      }
-    }
-  }
-  return null
 }

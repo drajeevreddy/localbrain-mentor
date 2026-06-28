@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthenticatedUser } from '@/lib/auth'
-import { createClient } from '@/lib/supabase/server'
 import { callLLM } from '@/lib/llm/adapter'
+import { getLLMSettings } from '@/lib/llm/settings'
 
 export async function POST(request: NextRequest) {
   const { user, error: authError } = await getAuthenticatedUser()
@@ -15,30 +15,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Skill and level are required' }, { status: 400 })
     }
 
-    const supabase = await createClient()
-    const { data: settingsData } = await supabase
-      .from('user_settings')
-      .select('settings')
-      .eq('user_id', user.id)
-      .single()
-
-    if (!settingsData?.settings?.providers) {
+    const settingsResult = await getLLMSettings(user.id)
+    if (!settingsResult) {
       return NextResponse.json({ error: 'No LLM provider configured' }, { status: 400 })
     }
 
-    const chain = settingsData.settings.fallbackChain || ['nvidia', 'groq', 'openrouter']
-    let providerConfig = null
-    for (const providerName of chain) {
-      const pc = settingsData.settings.providers[providerName]
-      if (pc?.enabled && pc?.apiKey) {
-        providerConfig = { provider: providerName, apiKey: pc.apiKey, model: pc.model }
-        break
-      }
-    }
-
-    if (!providerConfig) {
-      return NextResponse.json({ error: 'No LLM provider configured' }, { status: 400 })
-    }
+    const { provider, apiKey, model } = settingsResult
 
     const prompt = `Generate exactly 5 multiple-choice quiz questions to assess someone's knowledge of "${skill}" at the "${level}" difficulty level.
 
@@ -64,7 +46,7 @@ Requirements:
 
     const response = await callLLM(
       [{ role: 'user', content: prompt }],
-      { provider: providerConfig.provider, apiKey: providerConfig.apiKey, model: providerConfig.model }
+      { provider, apiKey, model }
     )
 
     let parsed
