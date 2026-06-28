@@ -58,11 +58,30 @@ export default function ResumePage() {
   const handlePdfUpload = async (file: File) => {
     setLoading(true)
     try {
-      const formData = new FormData()
-      formData.append('file', file)
+      const arrayBuffer = await file.arrayBuffer()
+      const { getDocument } = await import('pdfjs-dist')
+      const pdf = await getDocument({ data: new Uint8Array(arrayBuffer) }).promise
+      let fullText = ''
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i)
+        const content = await page.getTextContent()
+        const pageText = content.items
+          .reduce((acc: string, item: Record<string, unknown>) => {
+            if ('str' in item && typeof item.str === 'string') return acc + item.str + ' '
+            return acc
+          }, '')
+        fullText += pageText + '\n'
+      }
+
+      if (!fullText.trim()) {
+        setLoading(false)
+        return
+      }
+
       const res = await fetch("/api/resume/upload", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: fullText }),
       })
       const data = await res.json()
       if (data.error) {
@@ -74,7 +93,7 @@ export default function ResumePage() {
         }
       }
     } catch (err) {
-      console.error(err)
+      console.error('PDF upload error:', err)
     }
     setLoading(false)
   }

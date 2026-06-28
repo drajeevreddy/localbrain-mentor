@@ -22,41 +22,16 @@ Rules:
 Resume text:
 `
 
-async function extractPdfText(buffer: Buffer): Promise<string> {
-  const { PDFParse } = await import('pdf-parse')
-  const parser = new PDFParse({ data: new Uint8Array(buffer) })
-  const result = await parser.getText()
-  return result.text
-}
-
 export async function POST(request: NextRequest) {
   const { user, error: authError } = await getAuthenticatedUser()
   if (authError) return authError
 
   try {
-    const formData = await request.formData()
-    const file = formData.get('file') as File | null
+    const body = await request.json()
+    const { text } = body
 
-    if (!file) {
-      return NextResponse.json({ error: 'No file uploaded' }, { status: 400 })
-    }
-
-    if (file.type !== 'application/pdf') {
-      return NextResponse.json({ error: 'Only PDF files are supported' }, { status: 400 })
-    }
-
-    const arrayBuffer = await file.arrayBuffer()
-    const buffer = Buffer.from(arrayBuffer)
-
-    let text: string
-    try {
-      text = await extractPdfText(buffer)
-    } catch {
-      return NextResponse.json({ error: 'Could not parse PDF. The file may be corrupted or image-based.' }, { status: 400 })
-    }
-
-    if (!text || text.trim().length === 0) {
-      return NextResponse.json({ error: 'Could not extract text from PDF. The file may be image-based.' }, { status: 400 })
+    if (!text || typeof text !== 'string' || text.trim().length === 0) {
+      return NextResponse.json({ error: 'No text provided' }, { status: 400 })
     }
 
     const settingsResult = await getLLMSettings(user.id)
@@ -83,7 +58,7 @@ export async function POST(request: NextRequest) {
     try {
       embedding = await callEmbedding(text, { provider, apiKey })
     } catch {
-      // Embedding is optional
+      // optional
     }
 
     const supabase = await createClient()
