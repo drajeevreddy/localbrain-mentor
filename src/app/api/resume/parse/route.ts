@@ -38,22 +38,32 @@ export async function POST(request: NextRequest) {
 
     const settingsResult = await getLLMSettings(user.id)
     if (!settingsResult) {
-      return NextResponse.json({ error: 'No LLM provider configured. Add an API key in Settings.' }, { status: 400 })
+      return NextResponse.json({ error: 'No LLM provider configured. Go to Settings and add an API key first.' }, { status: 400 })
     }
 
     const { provider, apiKey, model } = settingsResult
 
-    const parsed = await callLLM(
-      [{ role: 'user', content: PARSE_PROMPT + text }],
-      { provider, apiKey, model }
-    )
+    let parsed: string
+    try {
+      parsed = await callLLM(
+        [{ role: 'user', content: PARSE_PROMPT + text }],
+        { provider, apiKey, model }
+      )
+    } catch (llmErr) {
+      console.error('LLM call failed:', llmErr)
+      return NextResponse.json({ error: `LLM call failed: ${llmErr instanceof Error ? llmErr.message : 'unknown error'}. Provider: ${provider}, Model: ${model}` }, { status: 500 })
+    }
+
+    if (!parsed || parsed.trim().length === 0) {
+      return NextResponse.json({ error: 'LLM returned empty response' }, { status: 500 })
+    }
 
     let parsedData
     try {
       parsedData = extractJson(parsed)
     } catch (e) {
-      console.error('JSON parse failed. Raw LLM response:', parsed?.substring(0, 500))
-      return NextResponse.json({ error: 'Failed to parse LLM response. Check LLM provider settings.', raw: parsed?.substring(0, 500) }, { status: 500 })
+      console.error('JSON parse failed. Raw LLM response (first 500 chars):', parsed.substring(0, 500))
+      return NextResponse.json({ error: `LLM returned non-JSON. Provider: ${provider}, Model: ${model}. Response starts with: ${parsed.substring(0, 200)}` }, { status: 500 })
     }
 
     let embedding: number[] = []
