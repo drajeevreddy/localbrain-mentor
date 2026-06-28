@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getAuthenticatedUser } from '@/lib/auth'
 import { callLLM } from '@/lib/llm/adapter'
 import { getLLMSettings } from '@/lib/llm/settings'
+import { extractJson } from '@/lib/llm/parseJson'
 
 export async function POST(request: NextRequest) {
   const { user, error: authError } = await getAuthenticatedUser()
@@ -51,8 +52,7 @@ Requirements:
 
     let parsed
     try {
-      const cleaned = response.replace(/```json\n?|\n?```/g, '').trim()
-      parsed = JSON.parse(cleaned)
+      parsed = extractJson(response)
     } catch {
       return NextResponse.json({ error: 'Failed to parse quiz from LLM response' }, { status: 500 })
     }

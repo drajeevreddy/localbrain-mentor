@@ -3,6 +3,7 @@ import { getAuthenticatedUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { callLLM } from '@/lib/llm/adapter'
 import { getLLMSettings } from '@/lib/llm/settings'
+import { extractJson } from '@/lib/llm/parseJson'
 
 const ROADMAP_PROMPT = `You are a learning roadmap generator. Given a skill gap analysis, generate a week-by-week learning plan. Return ONLY valid JSON.
 
@@ -109,8 +110,7 @@ export async function POST(request: NextRequest) {
 
     let roadmapData
     try {
-      const cleaned = result.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
-      roadmapData = JSON.parse(cleaned)
+      roadmapData = extractJson(result)
     } catch {
       return NextResponse.json({ error: 'Failed to parse roadmap', raw: result }, { status: 500 })
     }

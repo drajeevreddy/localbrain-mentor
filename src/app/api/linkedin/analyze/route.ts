@@ -3,6 +3,7 @@ import { getAuthenticatedUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { callLLM } from '@/lib/llm/adapter'
 import { getLLMSettings } from '@/lib/llm/settings'
+import { extractJson } from '@/lib/llm/parseJson'
 
 const PARSE_PROMPT = `You are a LinkedIn profile parser. Extract structured data from the LinkedIn profile text below. Return ONLY valid JSON with no markdown fences.
 
@@ -53,8 +54,7 @@ export async function POST(request: NextRequest) {
 
     let parsedData
     try {
-      const cleaned = parsed.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
-      parsedData = JSON.parse(cleaned)
+      parsedData = extractJson(parsed)
     } catch {
       return NextResponse.json({ error: 'Failed to parse LLM response', raw: parsed }, { status: 500 })
     }

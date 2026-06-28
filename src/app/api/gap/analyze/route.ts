@@ -3,6 +3,7 @@ import { getAuthenticatedUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { callLLM } from '@/lib/llm/adapter'
 import { getLLMSettings } from '@/lib/llm/settings'
+import { extractJson } from '@/lib/llm/parseJson'
 
 const GAP_PROMPT = `You are a career gap analyzer. Given a candidate's resume skills and a job's required skills, produce an honest gap analysis. Return ONLY valid JSON.
 
@@ -100,8 +101,7 @@ export async function POST(request: NextRequest) {
 
     let gapData
     try {
-      const cleaned = result.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
-      gapData = JSON.parse(cleaned)
+      gapData = extractJson(result)
     } catch {
       return NextResponse.json({ error: 'Failed to parse gap analysis', raw: result }, { status: 500 })
     }

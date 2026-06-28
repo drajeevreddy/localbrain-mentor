@@ -3,6 +3,7 @@ import { getAuthenticatedUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { callLLM } from '@/lib/llm/adapter'
 import { getLLMSettings } from '@/lib/llm/settings'
+import { extractJson } from '@/lib/llm/parseJson'
 
 const INTERVIEW_PROMPT = `You are a technical interview coach. Given a skill gap analysis for a target role, generate 10 interview questions that test the candidate on their missing skills and the requirements of the role.
 
@@ -88,8 +89,7 @@ export async function POST(request: NextRequest) {
 
     let parsedData
     try {
-      const cleaned = result.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
-      parsedData = JSON.parse(cleaned)
+      parsedData = extractJson(result)
     } catch {
       return NextResponse.json({ error: 'Failed to parse interview questions', raw: result }, { status: 500 })
     }

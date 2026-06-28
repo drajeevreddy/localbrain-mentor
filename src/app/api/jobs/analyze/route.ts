@@ -3,6 +3,7 @@ import { getAuthenticatedUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { callLLM, callEmbedding } from '@/lib/llm/adapter'
 import { getLLMSettings } from '@/lib/llm/settings'
+import { extractJson } from '@/lib/llm/parseJson'
 
 const ANALYZE_PROMPT = `You are a job requirements analyst. Extract structured skill requirements from the job description below. Return ONLY valid JSON.
 
@@ -57,8 +58,7 @@ export async function POST(request: NextRequest) {
 
     let parsedData
     try {
-      const cleaned = result.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
-      parsedData = JSON.parse(cleaned)
+      parsedData = extractJson(result)
     } catch {
       return NextResponse.json({ error: 'Failed to parse LLM response', raw: result }, { status: 500 })
     }
