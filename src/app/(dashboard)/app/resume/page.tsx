@@ -79,7 +79,7 @@ export default function ResumePage() {
         return
       }
 
-      const res = await fetch("/api/resume/upload", {
+      const res = await fetch("/api/resume/parse", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: fullText }),
